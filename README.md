@@ -35,7 +35,7 @@ go into the root directory of the package and run
 
     > cpm install
 
-This installs the executable `curry-data2xml' in the bin directory
+This installs the executable `curry-data2xml` in the bin directory
 of CPM.
 
 
