@@ -1,0 +1,25 @@
+{
+    "name": "xmldata",
+    "version": "0.0.1",
+    "author": "Bernd Brassel, Michael Hanus <mh@informatik.uni-kiel.de>",
+    "maintainer": "Michael Hanus <mh@informatik.uni-kiel.de>",
+    "synopsis": "A tool for generating XML conversion functions",
+    "dependencies": {
+    },
+    "description":
+      "This package contains a tool with generates
+       for a given Curry module a new Curry module containing conversion
+       functions from and to an XML representation for all data types
+       declared in this module.",
+    "source": {
+      "git": "https://git.ps.informatik.uni-kiel.de/curry-packages/xmldata.git",
+      "tag": "$version"
+    },
+    "executable": { "name": "curry-data2xml",
+                    "main": "Data2Xml"
+                  },
+    "testsuite": {
+        "src-dirs": [ "test" ],
+        "modules" : [ "testData2Xml" ]
+    }
+}
