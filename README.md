@@ -27,7 +27,7 @@ the data from this file by
 
 ## Installing the tool
 
-After installing and checking out the tool by the command
+After checking out the tool by the command
 
     > cpm checkout xmldata
 
