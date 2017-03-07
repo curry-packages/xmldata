@@ -7,18 +7,19 @@ import FilePath((</>))
 import System(system)
 import Test.Prop
 
-xmldataTool :: IO String
-xmldataTool =
-  getHomeDirectory >>= return . (</> (".cpm" </> "bin" </> "curry-data2xml"))
+import PackageConfig (packageExecutable)
+
+xmldataTool :: String
+xmldataTool = packageExecutable
 
 testDir :: String
 testDir = "test"
 
 testGenerateXMLConversions :: PropIO
 testGenerateXMLConversions = init `returns` 0
- where init = do tool <- xmldataTool
-                 system (tool ++ " -d " ++ testDir ++ " Prelude")
-                 system (tool ++ " -d " ++ testDir ++ " FlatCurry.Types")
+ where
+   init = do system (xmldataTool ++ " -d " ++ testDir ++ " Prelude")
+             system (xmldataTool ++ " -d " ++ testDir ++ " FlatCurry.Types")
 
 testXMLDataConversion :: PropIO
 testXMLDataConversion = system convertCmd `returns` 0
