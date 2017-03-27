@@ -20,7 +20,7 @@
                     "main": "Data2Xml"
                   },
     "testsuite": {
-        "src-dirs": [ "test" ],
-        "modules" : [ "testData2Xml" ]
+        "src-dir": "test",
+        "modules": [ "testData2Xml" ]
     }
 }

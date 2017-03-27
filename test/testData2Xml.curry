@@ -12,14 +12,11 @@ import PackageConfig (packageExecutable)
 xmldataTool :: String
 xmldataTool = packageExecutable
 
-testDir :: String
-testDir = "test"
-
 testGenerateXMLConversions :: PropIO
 testGenerateXMLConversions = init `returns` 0
  where
-   init = do system (xmldataTool ++ " -d " ++ testDir ++ " Prelude")
-             system (xmldataTool ++ " -d " ++ testDir ++ " FlatCurry.Types")
+   init = do system (xmldataTool ++ " Prelude")
+             system (xmldataTool ++ " FlatCurry.Types")
 
 testXMLDataConversion :: PropIO
 testXMLDataConversion = system convertCmd `returns` 0
@@ -32,7 +29,6 @@ testCleanup :: PropIO
 testCleanup = clean `returns` 0
  where
   clean = do
-    setCurrentDirectory testDir
     system (installDir++"/bin/cleancurry PreludeDataToXml")
     system (installDir++"/bin/cleancurry FlatCurry_TypesDataToXml")
     system (installDir++"/bin/cleancurry testData2XmlProg")
