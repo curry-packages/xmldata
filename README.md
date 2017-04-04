@@ -27,13 +27,11 @@ the data from this file by
 
 ## Installing the tool
 
-After checking out the tool by the command
+In order to install the current version of the tool, execute
+the commands
 
-    > cpm checkout xmldata
-
-go into the root directory of the package and run
-
-    > cpm install
+    > cpm update
+    > cpm installbin xmldata
 
 This installs the executable `curry-data2xml` in the bin directory
 of CPM.
