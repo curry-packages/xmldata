@@ -4,6 +4,7 @@
     "author": "Bernd Brassel, Michael Hanus <mh@informatik.uni-kiel.de>",
     "maintainer": "Michael Hanus <mh@informatik.uni-kiel.de>",
     "synopsis": "A tool for generating XML conversion functions",
+    "category": [ "Data", "Web" ],
     "dependencies": {
     },
     "description":
