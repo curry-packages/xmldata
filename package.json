@@ -6,6 +6,7 @@
     "synopsis": "A tool for generating XML conversion functions",
     "category": [ "Data", "Web" ],
     "dependencies": {
+        "xml": ">= 0.0.1"
     },
     "compilerCompatibility": {
         "pakcs": ">= 1.14.0, < 2.0.0",
