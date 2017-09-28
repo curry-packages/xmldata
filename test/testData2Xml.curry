@@ -21,7 +21,7 @@ testGenerateXMLConversions = init `returns` 0
 testXMLDataConversion :: PropIO
 testXMLDataConversion = system convertCmd `returns` 0
  where
-  convertCmd = installDir++"/bin/curry --noreadline :set -time :set v0 " ++
+  convertCmd = "cpm curry :set -time :set v0 " ++
                ":set parser -Wnone :l testData2XmlProg :eval main :q"
 
 -- Clean:
