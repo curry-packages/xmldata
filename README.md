@@ -30,8 +30,8 @@ the data from this file by
 In order to install the current version of the tool, execute
 the commands
 
-    > cpm update
-    > cpm installbin xmldata
+    > cypm update
+    > cypm install xmldata
 
 This installs the executable `curry-data2xml` in the bin directory
 of CPM.
