@@ -8,7 +8,7 @@
 import FlatCurry.Files
 import FlatCurry_TypesDataToXml
 import XML
-import System
+import System.Process
 
 main :: IO ()
 main = do

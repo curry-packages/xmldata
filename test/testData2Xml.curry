@@ -1,11 +1,11 @@
 -- CurryCheck test for Data2Xml tool
 --
 
-import Directory(getHomeDirectory, setCurrentDirectory)
-import Distribution(installDir)
-import FilePath((</>))
-import System(system)
+import System.Directory(getHomeDirectory, setCurrentDirectory)
+import System.FilePath((</>))
+import System.Process(system)
 import Test.Prop
+import Distribution(installDir)
 
 import PackageConfig (packageExecutable)
 

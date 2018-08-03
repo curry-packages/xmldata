@@ -1,14 +1,14 @@
 {
     "name": "xmldata",
-    "version": "2.0.0",
+    "version": "3.0.0",
     "author": "Bernd Brassel, Michael Hanus <mh@informatik.uni-kiel.de>",
     "maintainer": "Michael Hanus <mh@informatik.uni-kiel.de>",
     "synopsis": "A tool for generating XML conversion functions",
     "category": [ "Data", "Web" ],
     "dependencies": {
-        "abstract-curry": ">= 2.0.0",
-        "flatcurry"     : ">= 2.0.0",
-        "xml"           : ">= 2.0.0"
+        "abstract-curry": ">= 3.0.0",
+        "flatcurry"     : ">= 3.0.0",
+        "xml"           : ">= 3.0.0"
     },
     "compilerCompatibility": {
         "pakcs": ">= 2.0.0",

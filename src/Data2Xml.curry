@@ -36,11 +36,11 @@ import AbstractCurry.Files
 import AbstractCurry.Select
 import AbstractCurry.Build
 import AbstractCurry.Pretty(showCProg)
-import Char
+import Data.Char
+import Data.List
+import System.FilePath((</>))
+import System.Environment
 import Distribution(stripCurrySuffix)
-import FilePath((</>))
-import List
-import System
 
 data Option = LowCase | FileName String | OutDir String
  deriving Eq
