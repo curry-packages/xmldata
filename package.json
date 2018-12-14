@@ -7,6 +7,8 @@
     "category": [ "Data", "Web" ],
     "dependencies": {
         "abstract-curry": ">= 2.0.0",
+        "base"          : ">= 1.0.0, < 2.0.0",
+        "currypath"     : ">= 0.0.1",
         "flatcurry"     : ">= 2.0.0",
         "xml"           : ">= 2.0.0"
     },

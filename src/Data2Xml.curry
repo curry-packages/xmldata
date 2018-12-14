@@ -26,21 +26,22 @@
 ---     readXmlFile "Nat.xml" >>= return . xmlToNat
 ---
 --- @author Bernd Brassel, Michael Hanus
---- @version October 2016
+--- @version December 2018
 ------------------------------------------------------------------------------
 
 module Data2Xml where
+
+import Char
+import FilePath ( (</>) )
+import List
+import System
 
 import AbstractCurry.Types
 import AbstractCurry.Files
 import AbstractCurry.Select
 import AbstractCurry.Build
-import AbstractCurry.Pretty(showCProg)
-import Char
-import Distribution(stripCurrySuffix)
-import FilePath((</>))
-import List
-import System
+import AbstractCurry.Pretty ( showCProg )
+import System.CurryPath     ( stripCurrySuffix )
 
 data Option = LowCase | FileName String | OutDir String
  deriving Eq
