@@ -8,10 +8,10 @@
 import FlatCurry.Files
 import FlatCurry_TypesDataToXml
 import XML
-import System
+import System.Process ( exitWith )
 
 main :: IO ()
 main = do
   prog <- readFlatCurry "testData2XmlProg"
   let nprog = xmlToProg (head (parseXmlString (showXmlDoc (progToXml prog))))
-  exitWith (if (prog==nprog) then 0 else 1)
+  exitWith $ if prog == nprog then 0 else 1

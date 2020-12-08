@@ -1,11 +1,12 @@
 -- CurryCheck test for Data2Xml tool
 --
 
-import Directory(getHomeDirectory, setCurrentDirectory)
-import Distribution(installDir)
-import FilePath((</>))
-import System(system)
+import Curry.Compiler.Distribution ( installDir )
 import Test.Prop
+
+import System.Directory ( getHomeDirectory, setCurrentDirectory )
+import System.FilePath  ( (</>) )
+import System.Process   ( system )
 
 import PackageConfig (packageExecutable)
 
@@ -29,7 +30,7 @@ testCleanup :: PropIO
 testCleanup = clean `returns` 0
  where
   clean = do
-    system (installDir++"/bin/cleancurry PreludeDataToXml")
-    system (installDir++"/bin/cleancurry FlatCurry_TypesDataToXml")
-    system (installDir++"/bin/cleancurry testData2XmlProg")
+    system (installDir ++ "/bin/cleancurry PreludeDataToXml")
+    system (installDir ++ "/bin/cleancurry FlatCurry_TypesDataToXml")
+    system (installDir ++ "/bin/cleancurry testData2XmlProg")
     system "/bin/rm -f PreludeDataToXml.curry FlatCurry_TypesDataToXml.curry"

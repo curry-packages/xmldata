@@ -31,17 +31,16 @@
 
 module Data2Xml where
 
-import Char
-import FilePath ( (</>) )
-import List
-import System
-
+import Data.Char
+import Data.List
+import System.Environment   ( getArgs )
 import AbstractCurry.Types
 import AbstractCurry.Files
 import AbstractCurry.Select
 import AbstractCurry.Build
 import AbstractCurry.Pretty ( showCProg )
 import System.CurryPath     ( stripCurrySuffix )
+import System.FilePath      ( (</>) )
 
 data Option = LowCase | FileName String | OutDir String
  deriving Eq
@@ -175,14 +174,14 @@ mkType2Xml _ (CNewType _ _ _ _ _) =
   error "Data2Xml.mkType2Xml: CNewType not yet implemented!"
 
 mkConsDecl2Xml :: [Option] -> [CPattern] -> CConsDecl -> CRule
-mkConsDecl2Xml opts patVars (CCons _ _ name _ args) =
+mkConsDecl2Xml opts patVars (CCons name _ args) =
   simpleRule (newPatVars++[CPComb name (pVars arity)])
              (xml opts (tagNameForCons name) []
                   (map call2xml (zip args [0..])))
  where
   arity = length args
   newPatVars = renameUnused (map renVar $ concatMap tvarsOfType args) patVars
-mkConsDecl2Xml _ _ (CRecord _ _ _ _ _)
+mkConsDecl2Xml _ _ (CRecord _ _ _)
   = error "Data2Xml.mkConsDecl2Xml: CRecord not yet implemented!"
 
 type2XmlType :: [(Int,String)] -> CTypeExpr -> CTypeExpr
@@ -240,13 +239,13 @@ xml2typeType vars t
   = foldr CFuncType t (map (\x->CFuncType xmlType (CTVar x)) vars)
 
 mkXml2ConsDecl :: [Option] -> [CPattern] -> CConsDecl -> CRule
-mkXml2ConsDecl opts patVars (CCons _ _ name _ args)
+mkXml2ConsDecl opts patVars (CCons name _ args)
   = simpleRule (newPatVars++[pxml opts (tagNameForCons name) [] (pVars arity)])
                (applyF name (map callXml2 (zip args [0..])))
   where
    arity = length args
    newPatVars = renameUnused (map renVar $ concatMap tvarsOfType args) patVars
-mkXml2ConsDecl _ _ (CRecord _ _ _ _ _)
+mkXml2ConsDecl _ _ (CRecord _ _ _)
   = error "Data2Xml.mkXml2ConsDecl: CRecord not yet implemented!"
 
 renameUnused :: [(Int,String)] -> [CPattern] -> [CPattern]
@@ -285,13 +284,12 @@ callXml2Type t@(CFuncType _ _) =
 importTypes :: String -> [QName] -> IO ([String])
 importTypes m ts = do
   let imps = nub (map importType ts)
-  let specials = if isPrelude m then ["Read","ReadShowTerm"] else []
   imessage imps
-  return (imps++specials)
+  return imps
 
 imessage :: [String] -> IO ()
-imessage [] = done
-imessage [m] = putStrLn $ "You also need to generate the module "++m
+imessage []        = return ()
+imessage [m]       = putStrLn $ "You also need to generate the module " ++ m
 imessage (m:m':ms) =
   putStrLn $ "You also need to generate the modules "++(unwords $ m:m':ms)
 
@@ -372,9 +370,9 @@ baseTypeXml2 opts s =
 
 readFun :: String -> CExpr
 readFun typ = case typ of
-  "Int"    -> applyF ("Read","readInt") [toVar 0]
+  "Int"    -> applyF ("Prelude","read") [toVar 0]
   "Char"   -> applyF (pre "head") [toVar 0]
-  "Float"  -> applyF ("ReadShowTerm","readQTerm") [toVar 0]
+  "Float"  -> applyF ("Prelude","read") [toVar 0]
   "String" -> toVar 0
   _        -> error ("Dta2Xml.readFun: unknown type " ++ typ)
 
@@ -395,8 +393,8 @@ requiredTypesTypeDecl (CType    _ _ _ cs _) = concatMap requiredTypesConsDecl cs
 requiredTypesTypeDecl (CNewType _ _ _ cd _) = requiredTypesConsDecl cd
 
 requiredTypesConsDecl :: CConsDecl -> [QName]
-requiredTypesConsDecl (CCons   _ _ _ _ ts) = concatMap requiredTypesTypeExpr ts
-requiredTypesConsDecl (CRecord _ _ _ _ fs) = concatMap requiredTypesFieldDecl fs
+requiredTypesConsDecl (CCons   _ _ ts) = concatMap requiredTypesTypeExpr ts
+requiredTypesConsDecl (CRecord _ _ fs) = concatMap requiredTypesFieldDecl fs
  where requiredTypesFieldDecl (CField _ _ t) = requiredTypesTypeExpr t
 
 requiredTypesTypeExpr :: CTypeExpr -> [QName]
