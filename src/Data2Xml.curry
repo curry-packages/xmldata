@@ -26,7 +26,7 @@
 ---     readXmlFile "Nat.xml" >>= return . xmlToNat
 ---
 --- @author Bernd Brassel, Michael Hanus
---- @version December 2018
+--- @version December 2020
 ------------------------------------------------------------------------------
 
 module Data2Xml where
@@ -39,7 +39,7 @@ import AbstractCurry.Files
 import AbstractCurry.Select
 import AbstractCurry.Build
 import AbstractCurry.Pretty ( showCProg )
-import System.CurryPath     ( stripCurrySuffix )
+import System.CurryPath     ( runModuleAction )
 import System.FilePath      ( (</>) )
 
 data Option = LowCase | FileName String | OutDir String
@@ -68,7 +68,7 @@ argsToOptions args = case args of
   ["-?"]          -> []
   "-l" : opts     -> LowCase : argsToOptions opts
   "-d" : f : opts -> OutDir f : argsToOptions opts
-  [s]             -> [FileName (stripCurrySuffix s)]
+  [s]             -> [FileName s]
   _               -> []
 
 outDirOf :: [Option] -> String
@@ -80,18 +80,18 @@ derive :: [Option] -> IO ()
 derive []                   = printUsage
 derive (LowCase     : _  )  = printUsage
 derive (OutDir _    : _  )  = printUsage
-derive (FileName fn : opts) = do
-  CurryProg modName _ _ _  _ ts _ _ <- readCurry fn
+derive (FileName fn : opts) = flip runModuleAction fn $ \mname -> do
+  CurryProg modName _ _ _  _ ts _ _ <- readCurry mname
   let (specials,types) = if isPrelude modName
                            then (specialFuncs opts, filterSpecials ts)
                            else ([],ts)
-      progName = transModName fn
+      progName = transModName mname
       impTypes = maybeString $ nub $ filter ((/=modName) .fst)
                              $ concatMap requiredTypesTypeDecl types
   imports <- importTypes modName impTypes
   let outfile = outDirOf opts </> progName ++ ".curry"
   writeFile outfile $ showCProg $
-   CurryProg progName (nub $ ["XML",fn] ++ imports) Nothing [] [] []
+   CurryProg progName (nub $ ["XML",mname] ++ imports) Nothing [] [] []
              (map (mkType2Xml opts) types ++
               map (mkXml2Type opts) types ++ specials)
              []
@@ -282,7 +282,7 @@ callXml2Type t@(CFuncType _ _) =
 -----------------------------
 
 importTypes :: String -> [QName] -> IO ([String])
-importTypes m ts = do
+importTypes _ ts = do
   let imps = nub (map importType ts)
   imessage imps
   return imps

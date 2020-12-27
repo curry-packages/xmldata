@@ -1,9 +1,9 @@
 -- Test for Data2Xml tool
 --
 -- Execute:
--- > data2xml Prelude
--- > data2xml FlatCurry
--- > <REPL> :load testData2XmlProg :eval main :quit
+-- > cypm exec curry-data2xml Prelude
+-- > cypm exec curry-data2xml FlatCurry
+-- > cypm curry :load testData2XmlProg :eval main :quit
 
 import FlatCurry.Files
 import FlatCurry_TypesDataToXml
