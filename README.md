@@ -1,4 +1,5 @@
-# xmldata - A Generator for XML Data Conversion
+xmldata - A Generator for XML Data Conversion
+=============================================
 
 This package contains a tool `curry-data2xml` with generates
 for a given Curry module a new Curry module containing conversion functions
@@ -25,7 +26,8 @@ the data from this file by
     readXmlFile "Nat.xml" >>= return . xmlToNat
 
 
-## Installing the tool
+Installing the tool
+-------------------
 
 In order to install the current version of the tool, execute
 the commands
@@ -37,10 +39,10 @@ This installs the executable `curry-data2xml` in the bin directory
 of CPM.
 
 
-## Using the tool
+Using the tool
+--------------
 
 Execute the tool with the module containing the data for which
 the conversion functions should be created, e.g.,
 
     > curry-data2xml Nat
-

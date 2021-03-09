@@ -34,6 +34,7 @@ module Data2Xml where
 import Data.Char
 import Data.List
 import System.Environment   ( getArgs )
+
 import AbstractCurry.Types
 import AbstractCurry.Files
 import AbstractCurry.Select
@@ -90,12 +91,15 @@ derive (FileName fn : opts) = flip runModuleAction fn $ \mname -> do
                              $ concatMap requiredTypesTypeDecl types
   imports <- importTypes modName impTypes
   let outfile = outDirOf opts </> progName ++ ".curry"
-  writeFile outfile $ showCProg $
-   CurryProg progName (nub $ ["XML",mname] ++ imports) Nothing [] [] []
-             (map (mkType2Xml opts) types ++
-              map (mkXml2Type opts) types ++ specials)
-             []
-  putStrLn ("You can now import: " ++ outfile)
+      outprog = CurryProg
+                  progName (nub $ ["XML",mname] ++ imports) Nothing [] [] []
+                  (map (mkType2Xml opts) types ++
+                   map (mkXml2Type opts) types ++ specials)
+                  []
+  writeFile outfile $ nopatwarn ++ showCProg outprog
+  putStrLn $ "Now you can import: " ++ outfile
+ where
+  nopatwarn = "{-# OPTIONS_FRONTEND -Wno-incomplete-patterns #-}\n\n"
 
 maybeString :: [QName] -> [QName]
 maybeString xs

@@ -1,6 +1,7 @@
 -- CurryCheck test for the Data2Xml tool
 --
 
+import Control.Monad               ( unless )
 import Curry.Compiler.Distribution ( installDir )
 import Test.Prop
 
@@ -10,20 +11,32 @@ import System.Process   ( system )
 
 import PackageConfig    ( packageExecutable )
 
+-- Should we report output from running the tests?
+quiet :: Bool
+quiet = False
+
 xmldataTool :: String
 xmldataTool = packageExecutable
 
+showExecCmd :: String -> IO Int
+showExecCmd cmd = do
+  unless quiet $ putStrLn $ "EXECUTING: " ++ cmd
+  system cmd
+
 testGenerateXMLConversions :: PropIO
-testGenerateXMLConversions = init `returns` 0
+testGenerateXMLConversions = execgencmds `returns` 0
  where
-   init = do system $ xmldataTool ++ " Prelude"
-             system $ xmldataTool ++ " FlatCurry.Types"
+  execgencmds = do
+    ec1 <- showExecCmd $ xmldataTool ++ " Prelude"
+    ec2 <- showExecCmd $ xmldataTool ++ " FlatCurry.Types"
+    return (ec1 + ec2)
 
 testXMLDataConversion :: PropIO
-testXMLDataConversion = system convertCmd `returns` 0
+testXMLDataConversion = showExecCmd convertCmd `returns` 0
  where
-  convertCmd = installDir ++ "/bin/curry :set -time :set v0 " ++
-               ":set parser -Wnone :l testData2XmlProg :eval main :q"
+  quietargs = if quiet then ":set -time :set v0 :set parser -Wnone " else ""
+  convertCmd = installDir ++ "/bin/curry " ++ quietargs ++
+               ":load testData2XmlProg :eval main :quit"
 
 -- Clean:
 testCleanup :: PropIO
