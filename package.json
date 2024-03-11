@@ -23,7 +23,7 @@
        functions from and to an XML representation for all data types
        declared in this module.",
     "source": {
-      "git": "https://git.ps.informatik.uni-kiel.de/curry-packages/xmldata.git",
+      "git": "https://github.com/curry-packages/xmldata.git",
       "tag": "$version"
     },
     "configModule": "PackageConfig",
